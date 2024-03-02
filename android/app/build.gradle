@@ -60,6 +60,11 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    //  GOOGLE MAP -> i add it 26 Feb.
+    defaultConfig {
+        minSdkVersion 20
+    }
 }
 
 flutter {
