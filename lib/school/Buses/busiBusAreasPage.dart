@@ -14,13 +14,14 @@ class BusiBusAreasPage extends StatelessWidget {
               child: BusiGoogleMap(),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
               child: Container(
+                alignment: Alignment.bottomCenter,
                 padding: EdgeInsets.only(bottom: 20),
                 child: BusiBusCardWidget(
                   width: 371,
                   height: 131,
                   color: Colors.white,
+                  busiStackBottomAndText: BusiStackBottomAndText(),
                 ),
               ),
             )
