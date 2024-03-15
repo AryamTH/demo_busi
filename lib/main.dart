@@ -8,6 +8,7 @@ import 'package:demo_busi/widgets/busiButtonsWidgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:demo_busi/BusiGoogleMap.dart';
 import 'package:demo_busi/widgets/busiTextWidgets.dart';
+import 'BusiGoogleMapAreas.dart';
 
 main() {
   runApp(Map());
@@ -30,7 +31,7 @@ class Map extends StatelessWidget {
 
             //use onPressed to go back (previouce page)
           ),
-          body: BusiAddBusesPage()),
+          body: BusiGoogleMapAreas()),
     );
     // home: Home(),
   }
