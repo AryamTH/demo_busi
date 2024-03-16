@@ -1,18 +1,17 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-class BusiGoogleMapAreas extends StatefulWidget {
+class MyHomePage extends StatefulWidget {
   @override
-  _BusiGoogleMapAreasState createState() => _BusiGoogleMapAreasState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
+class _MyHomePageState extends State<MyHomePage> {
   static final Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -23,17 +22,17 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
   final Set<Polygon> _polygons = HashSet<Polygon>();
   final Set<Polyline> _polyLines = HashSet<Polyline>();
 
-  bool _drawSquareEnabled = false;
+  bool _drawPolygonEnabled = false;
   List<LatLng> _userPolyLinesLatLngList = [];
   bool _clearDrawing = false;
-  int? _lastXCoordinate, _lastYCoordinate;
+  double? _lastXCoordinate, _lastYCoordinate;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onPanUpdate: (_drawSquareEnabled) ? _onPanUpdate : null,
-        onPanEnd: (_drawSquareEnabled) ? _onPanEnd : null,
+        onPanUpdate: (_drawPolygonEnabled) ? _onPanUpdate : null,
+        onPanEnd: (_drawPolygonEnabled) ? _onPanEnd : null,
         child: GoogleMap(
           mapType: MapType.normal,
           initialCameraPosition: _kGooglePlex,
@@ -47,60 +46,74 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
       floatingActionButton: FloatingActionButton(
         onPressed: _toggleDrawing,
         tooltip: 'Drawing',
-        child: Icon((_drawSquareEnabled) ? Icons.cancel : Icons.edit),
+        child: Icon((_drawPolygonEnabled) ? Icons.cancel : Icons.edit),
       ),
     );
   }
 
   _toggleDrawing() {
     _clearPolygons();
-    setState(() => _drawSquareEnabled = !_drawSquareEnabled);
+    setState(() => _drawPolygonEnabled = !_drawPolygonEnabled);
   }
 
   _onPanUpdate(DragUpdateDetails details) async {
-    // To start drawing a new square every time.
+    int pixRatio = MediaQuery.of(context).devicePixelRatio.ceil();
+
+    // To start draw new polygon every time.
     if (_clearDrawing) {
       _clearDrawing = false;
       _clearPolygons();
     }
 
-    if (_drawSquareEnabled) {
+    if (_drawPolygonEnabled) {
       late double x, y;
+      // It times in 3 without any meaning,
+      // We think it's an issue with GoogleMaps package.
+
       if (Platform.isAndroid) {
-        // Workaround for an issue with GoogleMaps package.
-        x = details.globalPosition.dx * 3;
-        y = details.globalPosition.dy * 3;
+        double dx = details.delta.dx;
+        double dy = details.delta.dy;
+        x = details.localPosition.dx * pixRatio;
+        y = details.localPosition.dy * pixRatio;
+        print('Android - dx: $dx, dy: $dy, x: $x, y: $y pixRatio: $pixRatio');
       } else if (Platform.isIOS) {
-        x = details.globalPosition.dx;
-        y = details.globalPosition.dy;
+        double dx = details.delta.dx;
+        double dy = details.delta.dy;
+        double x = details.localPosition.dx;
+        double y = details.localPosition.dy;
+        print('iOS - dx: $dx, dy: $dy, x: $x, y: $y');
       }
 
       // Round the x and y.
-      int xCoordinate = x.round();
-      int yCoordinate = y.round();
+      double xCoordinate = x;
+      double yCoordinate = y;
 
-      // Check if the distance between the last point is not too far.
-      // To prevent two-finger drawing.
+      // Check if the distance between last point is not too far.
+      // to prevent two fingers drawing.
       if (_lastXCoordinate != null && _lastYCoordinate != null) {
-        var distance = sqrt(pow(xCoordinate - _lastXCoordinate!, 2) + pow(yCoordinate - _lastYCoordinate!, 2));
+        var distance = Math.sqrt(
+            Math.pow(xCoordinate - (_lastXCoordinate ?? 0), 2) +
+                Math.pow(yCoordinate - (_lastYCoordinate ?? 0), 2));
         // Check if the distance of point and point is large.
         if (distance > 80.0) return;
       }
 
-      // Cache the coordinates.
+      // Cached the coordinate.
       _lastXCoordinate = xCoordinate;
       _lastYCoordinate = yCoordinate;
 
-      ScreenCoordinate screenCoordinate = ScreenCoordinate(x: xCoordinate, y: yCoordinate);
+      ScreenCoordinate screenCoordinate =
+          ScreenCoordinate(x: xCoordinate.round(), y: yCoordinate.round());
 
       final GoogleMapController controller = await _controller.future;
       LatLng latLng = await controller.getLatLng(screenCoordinate);
 
       try {
-        // Add the new point to the list.
+        // Add new point to list.
         _userPolyLinesLatLngList.add(latLng);
 
-        _polyLines.removeWhere((polyline) => polyline.polylineId.value == 'user_polyline');
+        _polyLines.removeWhere(
+            (polyline) => polyline.polylineId.value == 'user_polyline');
         _polyLines.add(
           Polyline(
             polylineId: PolylineId('user_polyline'),
@@ -110,53 +123,32 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
           ),
         );
       } catch (e) {
-        print("Error painting: $e");
+        print(" error painting $e");
       }
       setState(() {});
     }
   }
 
   _onPanEnd(DragEndDetails details) async {
-     // Reset the last cached coordinates.
+    // Reset last cached coordinate
     _lastXCoordinate = null;
     _lastYCoordinate = null;
 
-    if (_drawSquareEnabled) {
-      // Calculate the coordinates for the square based on the last drawn points.
-      if (_userPolyLinesLatLngList.length >= 2) {
-        LatLng firstPoint = _userPolyLinesLatLngList.first;
-        LatLng secondPoint = _userPolyLinesLatLngList.last;
-        
-              double latDiff = secondPoint.latitude - firstPoint.latitude;
-        double lngDiff = secondPoint.longitude - firstPoint.longitude;
-        
-        LatLng thirdPoint = LatLng(secondPoint.latitude + latDiff, secondPoint.longitude);
-        LatLng fourthPoint = LatLng(firstPoint.latitude + latDiff, firstPoint.longitude);
-
-        // Clear existing drawings.
-        _polygons.clear();
-        _polyLines.clear();
-
-        // Draw the square.
-        _polygons.add(
-          Polygon(
-            polygonId: PolygonId('user_polygon'),
-            points: [
-              firstPoint,
-              secondPoint,
-              thirdPoint,
-              fourthPoint,
-            ],
-            strokeWidth: 2,
-            strokeColor: Colors.blue,
-            fillColor: Colors.blue.withOpacity(0.4),
-          ),
-        );
-
-        setState(() {
-          _clearDrawing = true;
-        });
-      }
+    if (_drawPolygonEnabled) {
+      _polygons
+          .removeWhere((polygon) => polygon.polygonId.value == 'user_polygon');
+      _polygons.add(
+        Polygon(
+          polygonId: PolygonId('user_polygon'),
+          points: _userPolyLinesLatLngList,
+          strokeWidth: 2,
+          strokeColor: Colors.blue,
+          fillColor: Colors.blue.withOpacity(0.4),
+        ),
+      );
+      setState(() {
+        _clearDrawing = true;
+      });
     }
   }
 

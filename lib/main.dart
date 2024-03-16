@@ -31,7 +31,7 @@ class Map extends StatelessWidget {
 
             //use onPressed to go back (previouce page)
           ),
-          body: BusiGoogleMapAreas()),
+          body: MyHomePage()),
     );
     // home: Home(),
   }
