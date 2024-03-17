@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "307956548489",
+    "project_id": "firebas-busi-demo",
+    "storage_bucket": "firebas-busi-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307956548489:android:47b0217779690a8efa1758",
+        "android_client_info": {
+          "package_name": "com.demoBusi.demo_busi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjkGk0od4FEqtJAc153eUT-KDXdxogh48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -17,7 +17,7 @@ main() {
 class Map extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp( 
       home: Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xff000388),
@@ -28,10 +28,11 @@ class Map extends StatelessWidget {
               bottomRight: Radius.circular(30),
             )),
             leading: BackButton(),
-
             //use onPressed to go back (previouce page)
           ),
-          body: MyHomePage()),
+          body: Text('kkkkkkkkkkkkkkkkkkkk'),
+
+         ),
     );
     // home: Home(),
   }
