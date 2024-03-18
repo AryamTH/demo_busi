@@ -39,6 +39,7 @@ class BusiBusCardWidget extends StatelessWidget {
   }
 }
 
+
 // widget for define the area for bus page
 class BusiStackBottomAndText extends StatelessWidget {
   const BusiStackBottomAndText({
