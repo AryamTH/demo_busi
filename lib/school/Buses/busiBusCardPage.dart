@@ -2,20 +2,22 @@
 import 'package:flutter/material.dart';
 import 'package:demo_busi/Widgets/busiCardsWidgets.dart';
 
-class BusiCardPage extends StatelessWidget {
-  BusiCardPage({
+class BusiBusCardPage extends StatelessWidget {
+  BusiBusCardPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          children: [
-            BusiBusCardWidget(),
-          ],
-        ),
+    // return either auth or stay here
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Center(
+            child: BusiBusCardWidget(),
+          ),
+        ],
       ),
     );
   }

@@ -27,7 +27,7 @@ class BusiDataBaseService {
     });
   }
 
-  //get collection note
+  //get collection 
 
   //CREATE: add new bus
 
