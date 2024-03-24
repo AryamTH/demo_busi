@@ -37,6 +37,7 @@ class BusiButtonDarkWidget extends StatelessWidget {
           textOnButton ?? 'Add Text!',
           style: TextStyle(
             fontSize: 15,
+            color: Colors.white,
           ),
         ),
         onPressed: () {},

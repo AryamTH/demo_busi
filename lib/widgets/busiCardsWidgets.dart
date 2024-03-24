@@ -5,6 +5,8 @@ class BusiBusCardWidget extends StatelessWidget {
   double? width;
   double? height;
   Color? color;
+  // VoidCallback? onChanged;
+
   BusiButtonDarkWidget? busiButtonDarkWidget;
   BusiButtonLightWidgit? busiButtonLightWidgit;
   Column? column;
@@ -39,7 +41,6 @@ class BusiBusCardWidget extends StatelessWidget {
   }
 }
 
-
 // widget for define the area for bus page
 class BusiStackBottomAndText extends StatelessWidget {
   const BusiStackBottomAndText({
@@ -56,7 +57,9 @@ class BusiStackBottomAndText extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: BusiButtonDarkWidget(
               textOnButton: ('اضافه'),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/busiAddBusesPage');
+              },
             ),
           ),
         ),

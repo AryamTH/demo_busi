@@ -26,7 +26,11 @@ class BusiAppBar extends StatelessWidget {
         bottomLeft: Radius.circular(30),
         bottomRight: Radius.circular(30),
       )),
-      leading: BackButton(),
+      leading: BackButton(
+        onPressed: (() {
+          Navigator.pushNamed(context, '/busiBusCardPage');
+        }),
+      ),
 
       //use onPressed to go back (previouce page)
     );

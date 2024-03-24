@@ -6,12 +6,12 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MyHomePage extends StatefulWidget {
+class BusiGoogleMapAreas extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _BusiGoogleMapAreasState createState() => _BusiGoogleMapAreasState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
   static final Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -34,19 +34,29 @@ class _MyHomePageState extends State<MyHomePage> {
         onPanUpdate: (_drawPolygonEnabled) ? _onPanUpdate : null,
         onPanEnd: (_drawPolygonEnabled) ? _onPanEnd : null,
         child: GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
-          polygons: _polygons,
-          polylines: _polyLines,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            polygons: _polygons,
+            polylines: _polyLines,
+            onMapCreated: (GoogleMapController controller) {
+              if (!_controller.isCompleted) {
+                //first calling is false
+                //call "completer()"
+                _controller.complete(controller);
+              } else {
+                //other calling, later is true,
+                //don't call again completer()
+              }
+            }),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff000388),
         onPressed: _toggleDrawing,
         tooltip: 'Drawing',
-        child: Icon((_drawPolygonEnabled) ? Icons.cancel : Icons.edit),
+        child: Icon(
+          (_drawPolygonEnabled) ? Icons.cancel : Icons.edit,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -73,8 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (Platform.isAndroid) {
         double dx = details.delta.dx;
         double dy = details.delta.dy;
-        x = details.localPosition.dx * pixRatio;
-        y = details.localPosition.dy * pixRatio;
+        x = details.localPosition.dx * 2;
+        y = details.localPosition.dy * 2;
         print('Android - dx: $dx, dy: $dy, x: $x, y: $y pixRatio: $pixRatio');
       } else if (Platform.isIOS) {
         double dx = details.delta.dx;

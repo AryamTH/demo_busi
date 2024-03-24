@@ -16,7 +16,9 @@ class BusiAuthService {
     return user != null ? BusiUser(uid: user.uid) : null;
   }
 
-  
+  //__________________________________________________
+
+  //__________________________________________________
 
   // signIn anonFuture
   Future signInAnon() async {
