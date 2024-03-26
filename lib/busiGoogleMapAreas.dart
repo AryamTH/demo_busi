@@ -49,7 +49,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
               }
             }),
       ),
-    /* floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff000388),
         onPressed: _toggleDrawing,
         tooltip: 'Drawing',
@@ -57,7 +57,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
           (_drawPolygonEnabled) ? Icons.cancel : Icons.edit,
           color: Colors.white,
         ),
-      ),*/
+      ),
     );
   }
 
