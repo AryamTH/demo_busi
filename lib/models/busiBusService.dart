@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+//final CollectionReference _mainCollection = _firestore.collection('notes');
 // All Method and propiruty to ininteract eith firestore
+
 class BusiDataBaseService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   // * to define the user id to link it with his documents
   //final String schoolId;
   //BusiDataBaseService(this.schoolId) {}
@@ -17,8 +21,7 @@ class BusiDataBaseService {
   // collectio inside it "Documents" and the documents have "Propreties"
   // each user have Uniqe id and each document for each user has the same ID!
   // if we use * we must add schoolId in parameter
-  Future BusiUpdateUserData(
-      String busPlate, int busNumber, int basCapacity) async {
+  Future busiUAddBusrData(int busPlate, int busNumber, int basCapacity) async {
     return await busiBusCollection.doc().set({
       //pririties:ss
       'busPlate': busPlate,
@@ -27,7 +30,13 @@ class BusiDataBaseService {
     });
   }
 
-  //get collection 
+  Future busiAddBusInfo(int busPlate, int busNumber, int basCapacity) async {
+    try {
+      // make request to firebase by instanse of req
+      await busiBusCollection.doc().set({});
+    } catch (e) {}
+  }
+  //get collection
 
   //CREATE: add new bus
 

@@ -1,14 +1,12 @@
-import 'package:demo_busi/busiGoogleMapAreas.dart';
-import 'package:demo_busi/school/Buses/BusiaddBusesPage.dart';
-import 'package:demo_busi/school/Buses/BusibusAreasPage.dart';
-import 'package:demo_busi/school/Buses/busiBusCardPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:demo_busi/pages/school/Buses/busiBusCardPage.dart';
+import 'package:demo_busi/school/Buses/BusiaddBusesPage.dart';
+import 'package:demo_busi/school/Buses/BusibusAreasPage.dart';
 
-void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MaterialApp(
       initialRoute: '/busiBusCardPage',

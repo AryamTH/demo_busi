@@ -15,7 +15,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
   static final Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(24.470901, 39.612236),
     zoom: 14.4746,
   );
 
@@ -49,7 +49,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
               }
             }),
       ),
-      floatingActionButton: FloatingActionButton(
+    /* floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff000388),
         onPressed: _toggleDrawing,
         tooltip: 'Drawing',
@@ -57,7 +57,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
           (_drawPolygonEnabled) ? Icons.cancel : Icons.edit,
           color: Colors.white,
         ),
-      ),
+      ),*/
     );
   }
 
