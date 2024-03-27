@@ -5,9 +5,9 @@ import 'dart:convert';
 
 // ref to firebase collectio n
 class BusiFirebase_crud {
-  // final CollectionReference busiBusCollection =
-  // Add the collection in our firestore DB -> it's crete it for us !
-  //   FirebaseFirestore.instance.collection('Buses');
+  final CollectionReference busiBusCollection =
+      // Add the collection in our firestore DB -> it's crete it for us !
+      FirebaseFirestore.instance.collection('Buses');
   // 1- Create
   Future createBus({BusiBus? busAdd}) async {
     if (busAdd != null) {
