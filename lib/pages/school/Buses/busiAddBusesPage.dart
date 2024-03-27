@@ -1,11 +1,9 @@
-import 'package:demo_busi/Widgets/busiCardsWidgets.dart';
+import 'package:demo_busi/models/busiBus.dart';
 import 'package:demo_busi/thems/busiTextWidgets.dart';
-import 'package:demo_busi/widgets/BusiTextFieldsWidgets.dart';
+import 'package:demo_busi/services/busiFirebase_crud.dart';
 
 import 'package:flutter/material.dart';
 import 'package:demo_busi/busiGoogleMapAreas.dart';
-import 'package:demo_busi/BusiGoogleMap.dart';
-import 'package:flutter/widgets.dart';
 
 class BusiAddBusesPage extends StatefulWidget {
   const BusiAddBusesPage({super.key});
@@ -15,6 +13,12 @@ class BusiAddBusesPage extends StatefulWidget {
 }
 
 class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
+  final BusiFirebase_crud firebaseCrud = BusiFirebase_crud();
+  // Text editing Controller
+  final busPlateController = TextEditingController();
+  final busNumberController = TextEditingController();
+  final busCapacityController = TextEditingController();
+
   // use flutter validation (Glapal key)
   // type: form state -> use to identify our form
   final _formKey = GlobalKey<FormState>();
@@ -22,7 +26,7 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
   // text field state
   String? busPlate;
   String? busNumber;
-  String? basCapacity;
+  String? busCapacity;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +81,8 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
                           width: 265,
                           height: 37,
                           child: TextFormField(
+                            // Attach controller to text fiels
+                            controller: busNumberController,
                             // func to see if it's valid or not return null or string(helper text)
                             // if reicive null then it's not emty and the func in onPressed will be true
                             validator: (val) =>
@@ -121,6 +127,8 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
                           width: 265,
                           height: 37,
                           child: TextFormField(
+                            // Attach controller to text fiels
+                            controller: busPlateController,
                             //
                             validator: (val) =>
                                 val!.isEmpty ? 'Enter the bus plate' : null,
@@ -163,12 +171,14 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
                           width: 265,
                           height: 37,
                           child: TextFormField(
+                            // Attach controller to text fiels
+                            controller: busCapacityController,
                             //
                             validator: (val) =>
                                 val!.isEmpty ? 'Enter bus the capacity' : null,
                             // represent what in the textformfield ! when user write something the function run
                             onChanged: (val) {
-                              setState(() => basCapacity = val);
+                              setState(() => busCapacity = val);
                             },
                             decoration: InputDecoration(
                               filled: true,
@@ -282,13 +292,23 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
                                 // if F not valide
                                 // how knoe if valide or not? we add some ptoprtiyies in textfield to know
                                 if (_formKey.currentState!.validate()) {
+                                  // create new user obj then accses to all our controller so we accese to text field
+                                  final busAdd = BusiBus(
+                                    busPlate:
+                                        int.parse(busNumberController.text),
+                                    busNumber:
+                                        int.parse(busNumberController.text),
+                                    busCapacity:
+                                        int.parse(busCapacityController.text),
+                                  );
+                                  firebaseCrud.createBus(busAdd: busAdd);
+
                                   Navigator.pushNamed(
                                       context, '/busiBusCardPage');
                                 }
-
                                 print(busPlate);
                                 print(busNumber);
-                                print(basCapacity);
+                                print(busCapacity);
                               }),
                         ),
                       ),

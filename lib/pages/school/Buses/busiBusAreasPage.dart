@@ -1,4 +1,4 @@
-import 'package:demo_busi/Widgets/busiCardsWidgets.dart';
+import 'package:demo_busi/thems/busiBusCardWidget.dart';
 import 'package:demo_busi/busiGoogleMapAreas.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class BusiBusAreasPage extends StatelessWidget {
         ),
         //use onPressed to go back (previouce page)
       ),
-     // drawer: Drawer(), //add drawer
+      // drawer: Drawer(), //add drawer
 
       body: Stack(
         children: [

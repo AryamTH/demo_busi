@@ -1,8 +1,8 @@
+import 'package:demo_busi/pages/school/Buses/busiAddBusesPage.dart';
+import 'package:demo_busi/pages/school/Buses/busiBusCardPage.dart';
+import 'package:demo_busi/pages/school/Buses/BusibusAreasPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:demo_busi/pages/school/Buses/busiBusCardPage.dart';
-import 'package:demo_busi/school/Buses/BusiaddBusesPage.dart';
-import 'package:demo_busi/school/Buses/BusibusAreasPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
