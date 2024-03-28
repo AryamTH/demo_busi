@@ -22,4 +22,9 @@ class BusiFirebase_crud {
       print('busAdd is null');
     }
   }
+
+  // 2- Read:
+  Stream<List<BusiBus>> busRead() =>
+      FirebaseFirestore.instance.collection('Buses').snapshots().map((snapshot)
+       => snapshot.docs.map((doc) => BusiBus.fromJson(doc.data())).toList());
 }

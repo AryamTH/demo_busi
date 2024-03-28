@@ -297,7 +297,7 @@ class _BusiAddBusesPageState extends State<BusiAddBusesPage> {
                                     busPlate:
                                         int.parse(busNumberController.text),
                                     busNumber:
-                                        int.parse(busNumberController.text),
+                                        int.parse(busPlateController.text),
                                     busCapacity:
                                         int.parse(busCapacityController.text),
                                   );
