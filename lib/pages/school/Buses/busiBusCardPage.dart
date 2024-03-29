@@ -25,25 +25,31 @@ class BusiBusCardPage extends StatelessWidget {
         ),
       ),
       body: ListView(
+        scrollDirection: Axis.vertical,
         children: [
-          StreamBuilder<List<BusiBus>>(
-            stream: BusiFirebase_crud().busRead(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final buses = snapshot.data!;
-                return ListView(
-                  children: buses.map(buildBus).toList(),
-                );
-              } else {
-                // Placeholder widget when data is loading or unavailable
-                return Center(
-                  child: CircularProgressIndicator(), // Or any other widget
-                );
-              }
-            },
-          ),
+          // first card
           Container(
-            padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+            child: StreamBuilder<List<BusiBus>>(
+              stream: BusiFirebase_crud().busRead(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final buses = snapshot.data!;
+                  return Column(
+                    children: buses.map(buildBus).toList(),
+                  );
+                } else {
+                  // Placeholder widget when data is loading or unavailable
+                  return Center(
+                    child: CircularProgressIndicator(), // Or any other widget
+                  );
+                }
+              },
+            ),
+          ),
+
+          // secound card
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
             alignment: Alignment.topCenter,
             child: SizedBox(
               width: 324,
@@ -63,8 +69,8 @@ class BusiBusCardPage extends StatelessWidget {
                       // Text
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(110, 35, 0, 0),
-                          child: BusiTextWidget(
+                          padding: const EdgeInsets.fromLTRB(110, 35, 0, 0),
+                          child: const BusiTextWidget(
                             text: 'اضافة باص',
                             size: 20,
                           ),
@@ -73,14 +79,14 @@ class BusiBusCardPage extends StatelessWidget {
                       // Image
                       Container(
                         padding: EdgeInsets.fromLTRB(0, 15, 15, 0),
-                        child: SizedBox(
+                        child: const SizedBox(
                           width: 83, // Adjust width as needed
                           height: 83,
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Image(
                               image: AssetImage(
-                                'lib/school/Buses/BusPageImages/add_bus.png',
+                                'lib/pages/school/Buses/BusPageImages/add_bus.png',
                               ),
                             ),
                           ),
@@ -99,7 +105,6 @@ class BusiBusCardPage extends StatelessWidget {
 
   Widget buildBus(BusiBus bus) => Container(
         padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
-        alignment: Alignment.topCenter,
         child: SizedBox(
           width: 324,
           height: 167,
@@ -108,34 +113,74 @@ class BusiBusCardPage extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Text
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(110, 35, 0, 0),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Text('${bus.busPlate}'),
+                // Row at top right
+                Container(
+                  alignment: Alignment.topRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Text
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 15, 10, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            // Add from firebase (:
+                            BusiTextWidget(text: 'رقم الباص: ${bus.busNumber}'),
+                            BusiTextWidget(
+                                text: 'عدد الطلاب: ${bus.busCapacity}'),
+                            BusiTextWidget(text: 'رقم اللوحه: ${bus.busPlate}'),
+                          ],
+                        ),
                       ),
-                      title: Text(bus.busNumber.toString()),
-                      subtitle: Text(bus.busCapacity.toString()),
-                    ),
+                      // Image
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
+                        child: SizedBox(
+                          width: 72, // Adjust width as needed
+                          height: 72,
+                          child: Image(
+                            image: AssetImage(
+                              'lib/pages/school/Buses/BusPageImages/bus-school2.png',
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                // Image
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 15, 15, 0),
-                  child: SizedBox(
-                    width: 83, // Adjust width as needed
-                    height: 83,
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Image(
-                        image: AssetImage(
-                          'lib/school/Buses/BusPageImages/add_bus.png',
+                // Button at bottom center
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: 116,
+                      height: 46,
+                      child: ElevatedButton(
+                        //STYLE THE BUTTON
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            //to set border radius to button
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          backgroundColor: Color(0XffEAEFFF),
                         ),
+                        //Required (must but it in the ElevatedButton widget!)
+                        child: const Text(
+                          'المنطقه للباص',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0Xff000388),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          //  Navigator.pushNamed(context, '/busiAddBusesPage');
+                        },
                       ),
                     ),
                   ),
