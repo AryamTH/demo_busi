@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'dart:math' as Math;
-
+import 'package:demo_busi/models/busiBus.dart';
+import 'package:demo_busi/services/busiFirebase_crud.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -44,6 +45,7 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
                 //call "completer()"
                 _controller.complete(controller);
               } else {
+                print('tttrrrrrryyyy aaaagggggaaaaiiiiinnnn');
                 //other calling, later is true,
                 //don't call again completer()
               }
@@ -139,14 +141,13 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
     }
   }
 
-  _onPanEnd(DragEndDetails details) async {
+ _onPanEnd(DragEndDetails details) async {
     // Reset last cached coordinate
     _lastXCoordinate = null;
     _lastYCoordinate = null;
 
     if (_drawPolygonEnabled) {
-      _polygons
-          .removeWhere((polygon) => polygon.polygonId.value == 'user_polygon');
+      _polygons.removeWhere((polygon) => polygon.polygonId.value == 'user_polygon');
       _polygons.add(
         Polygon(
           polygonId: PolygonId('user_polygon'),
@@ -156,6 +157,9 @@ class _BusiGoogleMapAreasState extends State<BusiGoogleMapAreas> {
           fillColor: Colors.blue.withOpacity(0.4),
         ),
       );
+
+    
+
       setState(() {
         _clearDrawing = true;
       });
